@@ -338,7 +338,9 @@ open class ReactiveBleClient(private val context: Context) : BleClient {
                             if (characteristic.descriptors.isEmpty()) {
                                 NotificationSetupMode.COMPAT
                             } else {
-                                NotificationSetupMode.DEFAULT
+                                // Register locally before writing the CCCD so a value the peripheral
+                                // sends together with the CCCD write response is not dropped (#211).
+                                NotificationSetupMode.QUICK_SETUP
                             }
 
                         if ((characteristic.properties and BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
